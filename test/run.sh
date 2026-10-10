@@ -12,5 +12,5 @@ fi
 echo "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed  $JSON" | sha256sum -c --quiet -
 D=src/dev/droidtop/plugins/githubapps
 kotlinc -jvm-target 17 -cp "$JSON" -include-runtime -d build/test/tests.jar \
-  $D/Versions.kt $D/Assets.kt $D/Forges.kt $D/ApkProbe.kt $D/ObtainiumImport.kt test/Tests.kt
+  $D/Versions.kt $D/Assets.kt $D/Forges.kt $D/HttpAnswer.kt $D/ApkProbe.kt $D/ObtainiumImport.kt test/Tests.kt
 java -cp "build/test/tests.jar:$JSON" dev.droidtop.plugins.githubapps.TestsKt

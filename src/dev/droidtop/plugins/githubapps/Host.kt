@@ -6,7 +6,6 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.Base64
 import org.json.JSONObject
 
 /** The broker refused or failed a call; [code] is the broker's error code (`UNSUPPORTED`, `PERMISSION_DENIED`, ...). */
@@ -14,11 +13,6 @@ class BrokerFailure(val code: String, message: String) : IOException(message)
 
 /** A forge refused because the request limit is used up; [resetAt] is the epoch second it resets, or 0 when not said. */
 class RateLimited(val resetAt: Long, message: String) : IOException(message)
-
-/** An HTTP answer. [headers] are lower-case. [truncated] is true when the body was longer than droidtop hands over. */
-class HttpAnswer(val status: Int, val headers: Map<String, String>, val body: ByteArray, val truncated: Boolean) {
-    val text: String get() = body.toString(Charsets.UTF_8)
-}
 
 /**
  * Everything this plugin asks of droidtop, through the broker (docs/plugin-api.md 1.4): it runs contained, with no
@@ -43,14 +37,7 @@ internal class Host(private val context: PluginContext) {
     fun http(url: String, headers: Map<String, String> = emptyMap(), timeoutMs: Int = 30_000): HttpAnswer {
         val args = JSONObject().put("url", url).put("as", "base64").put("timeoutMs", timeoutMs)
         if (headers.isNotEmpty()) args.put("headers", JSONObject(headers))
-        return answerOf(call("net", "request", args))
-    }
-
-    private fun answerOf(data: JSONObject): HttpAnswer {
-        val headers = HashMap<String, String>()
-        data.optJSONObject("headers")?.let { h -> h.keys().forEach { headers[it.lowercase()] = h.optString(it) } }
-        val body = data.optString("bodyBase64").let { if (it.isEmpty()) ByteArray(0) else Base64.getDecoder().decode(it) }
-        return HttpAnswer(data.optInt("status"), headers, body, data.optBoolean("truncated"))
+        return HttpAnswer.of(call("net", "request", args))
     }
 
     @Volatile private var githubHostOp: Boolean? = null
@@ -65,9 +52,9 @@ internal class Host(private val context: PluginContext) {
     fun githubApi(url: String, headers: Map<String, String> = emptyMap()): HttpAnswer {
         if (githubHostOp != false && url.startsWith(GITHUB_API)) {
             try {
-                val args = JSONObject().put("path", url.removePrefix(GITHUB_API)).put("timeoutMs", 30_000)
+                val args = JSONObject().put("path", url.removePrefix(GITHUB_API)).put("as", "base64").put("timeoutMs", 30_000)
                 if (headers.isNotEmpty()) args.put("headers", JSONObject(headers))
-                val answer = answerOf(call("github", "request", args))
+                val answer = HttpAnswer.of(call("github", "request", args))
                 githubHostOp = true
                 return answer
             } catch (failure: BrokerFailure) {

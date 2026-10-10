@@ -294,7 +294,22 @@ private fun probe() {
     check("a cut-off manifest", runCatching { ApkProbe.probe(MemorySource(apk(manifest.copyOf(100), null))) }.exceptionOrNull() is IOException)
 }
 
+// ---------------------------------------------------------------- answers
+
+private fun answers() {
+    val json = """[{"tag_name":"v1.0"}]"""
+    val asText = HttpAnswer.of(org.json.JSONObject().put("status", 200).put("body", json).put("headers", org.json.JSONObject().put("ETag", "W/\"x\"")))
+    same("a text body is read (github.request without as)", json, asText.text)
+    same("header names are lower-cased", "W/\"x\"", asText.headers["etag"])
+    val asBase64 = HttpAnswer.of(org.json.JSONObject().put("status", 200).put("bodyBase64", java.util.Base64.getEncoder().encodeToString(json.toByteArray())).put("truncated", true))
+    same("a base64 body is read", json, asBase64.text)
+    check("truncated is carried", asBase64.truncated)
+    same("an answer with no body is empty", "", HttpAnswer.of(org.json.JSONObject().put("status", 304)).text)
+    same("the releases of a text answer are found", 1, Forges.parseList(ForgeKind.GITHUB, "github.com", asText.text).size)
+}
+
 fun main() {
+    answers()
     versions()
     assets()
     forges()
