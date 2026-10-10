@@ -22,7 +22,7 @@ class HttpAnswer(val status: Int, val headers: Map<String, String>, val body: By
 
 /**
  * Everything this plugin asks of droidtop, through the broker (docs/plugin-api.md 1.4): it runs contained, with no
- * socket and no file path of its own, so the network is `net.http` (small answers) and `net.download` (a whole file,
+ * socket and no file path of its own, so the network is `net.request` (small answers) and `net.download` (a whole file,
  * as a job into the plugin's own data), and its files are `data.open` descriptors.
  */
 internal class Host(private val context: PluginContext) {
@@ -39,11 +39,11 @@ internal class Host(private val context: PluginContext) {
         return reply.optJSONObject("data") ?: JSONObject()
     }
 
-    /** One `net.http` request: any status is an answer. At most 128 KiB of body come back (the rest sets `truncated`). */
+    /** One `net.request` request: any status is an answer. At most 128 KiB of body come back (the rest sets `truncated`). */
     fun http(url: String, headers: Map<String, String> = emptyMap(), timeoutMs: Int = 30_000): HttpAnswer {
         val args = JSONObject().put("url", url).put("as", "base64").put("timeoutMs", timeoutMs)
         if (headers.isNotEmpty()) args.put("headers", JSONObject(headers))
-        return answerOf(call("net", "http", args))
+        return answerOf(call("net", "request", args))
     }
 
     private fun answerOf(data: JSONObject): HttpAnswer {
@@ -60,7 +60,7 @@ internal class Host(private val context: PluginContext) {
      * account to plugins (docs/plugin-api.md 3 G4: the `github` API's `request` op, permission `github.api`; the
      * token stays in droidtop), the request goes through it and gets the account's higher request limit. Where it does
      * not (a droidtop that does not have the op yet, the permission not granted, nobody signed in), the same request
-     * goes out as an ordinary, unauthenticated `net.http` one. The answer is remembered for the rest of this process.
+     * goes out as an ordinary, unauthenticated `net.request` one. The answer is remembered for the rest of this process.
      */
     fun githubApi(url: String, headers: Map<String, String> = emptyMap()): HttpAnswer {
         if (githubHostOp != false && url.startsWith(GITHUB_API)) {
@@ -86,10 +86,10 @@ internal class Host(private val context: PluginContext) {
         val jobId = call("net", "download", JSONObject().put("url", url).put("name", name)).optString("jobId")
         while (true) {
             if (cancelled()) {
-                runCatching { call("plugins", "job_cancel", JSONObject().put("jobId", jobId)) }
+                runCatching { call("job", "cancel", JSONObject().put("jobId", jobId)) }
                 throw IOException("cancelled")
             }
-            val status = call("plugins", "job_status", JSONObject().put("jobId", jobId))
+            val status = call("job", "get_status", JSONObject().put("jobId", jobId))
             if (status.optBoolean("done")) {
                 if (!status.optBoolean("ok")) throw IOException(status.optString("message").ifBlank { "the download of $url failed" })
                 return

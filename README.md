@@ -66,7 +66,7 @@ sorting methods and settings names, and its export format. The code here is writ
 - `src/dev/droidtop/plugins/githubapps/`: `GithubAppsPlugin` (the calls), `Tracker` (look at a page),
   `Forges` (addresses, release JSON, choosing a release), `Assets` (`AssetPicker`), `Versions`, `ApkProbe`
   and `Ranges` (reading an APK ahead), `ObtainiumImport`, `Store` (the plugin's data files), `Host` (broker
-  calls: `net.http`, `github.request`, `net.download`, `data.open`, `files.pick`).
+  calls: `net.request`, `github.request`, `net.download`, `data.open`, `files.pick`).
 - `manifest.template.json`: everything but `payload`. Permissions: `net.any` (Forgejo servers can be anywhere),
   and optional `intents.in`, `github.api`, `files.picker`.
 - `build.sh`, `rules.pro`: compile, shrink with R8 and hash. The plugin bundles no library.

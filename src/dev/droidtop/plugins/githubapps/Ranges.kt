@@ -8,7 +8,7 @@ import java.nio.ByteBuffer
 internal class RangeUnsupported(what: String) : IOException(what)
 
 /**
- * An APK at an address, read with HTTP Range requests through `net.http` (at most 96 KiB each). The first request asks
+ * An APK at an address, read with HTTP Range requests through `net.request` (at most 96 KiB each). The first request asks
  * for the end of the file, which also tells the file's size (`Content-Range`); the zip directory and the signing block
  * are there, so a probe is usually that one request and one for the manifest. Redirects (a release file is served from
  * another host) are followed by droidtop, which checks every hop.

@@ -44,7 +44,7 @@ class GithubAppsPlugin : DroidtopPlugin {
         val device = Device.of(args)
         return try {
             when (call.op) {
-                "sources" -> PluginReply.ok(sources())
+                "list_sources", "sources" -> PluginReply.ok(sources())
                 "open_link" -> review(args.optString("link"), device)
                 "remove_source" -> {
                     val source = store.sources().firstOrNull { it.id == args.optString("source") }
@@ -60,9 +60,9 @@ class GithubAppsPlugin : DroidtopPlugin {
                     PluginReply.ok(JSONObject().put("message", if (enabled) "${source.name} is tracked again" else "${source.name} is switched off"))
                 }
                 "search" -> PluginReply.ok(search(args.optString("query"), args.optInt("limit", 200), device))
-                "app" -> app(args.optString("id"), device)?.let { PluginReply.ok(it) }
+                "get_app", "app" -> app(args.optString("id"), device)?.let { PluginReply.ok(it) }
                     ?: PluginReply.error(PluginErrorCode.NOT_FOUND, "no page you track has ${args.optString("id")} for this device")
-                "latest" -> PluginReply.ok(latest(args.optString("after").takeIf { it.isNotBlank() }, args.optInt("limit", 500), device))
+                "list_latest", "latest" -> PluginReply.ok(latest(args.optString("after").takeIf { it.isNotBlank() }, args.optInt("limit", 500), device))
                 else -> PluginReply.error(PluginErrorCode.UNSUPPORTED, "unsupported op ${call.op}")
             }
         } catch (limited: RateLimited) {
