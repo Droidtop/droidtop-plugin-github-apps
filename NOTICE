@@ -1,0 +1,12 @@
+App releases for droidtop (GitHub, GitLab, Codeberg)
+Copyright the droidtop contributors. Licensed under the GNU General Public License, version 3 (LICENSE).
+
+This plugin follows Obtainium (https://github.com/ImranR98/Obtainium), Copyright Imran Remtulla and
+contributors, licensed under the GNU General Public License, version 3: how it reads GitHub release lists
+(draft and pre-release handling, sorting methods, the names of its settings), its idea of picking the APK
+asset by architecture, and the format of its export file. The code in src/ is written for droidtop's plugin
+API; where it follows Obtainium's behaviour the comments say so.
+
+Android's binary XML and APK Signing Block layouts are read as documented by the Android Open Source Project
+(Apache License, Version 2.0, https://www.apache.org/licenses/LICENSE-2.0). test/fixtures/enginehost-manifest.axml
+is the AndroidManifest.xml of droidtop's Enginehost app, used as a test input.

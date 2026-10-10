@@ -1,0 +1,30 @@
+{
+  "id": "droidtop.github-apps",
+  "origin": "droidtop",
+  "label": "App releases (GitHub, GitLab, Codeberg)",
+  "description": "Keep Android apps up to date straight from their developers' release pages on GitHub, GitLab, Codeberg or another Forgejo server, like Obtainium. Add a page by its address or a link, choose pre-releases and a file name pattern if you want, or import an Obtainium export. droidtop picks the APK that fits your device, checks that it is the app and the signing key you accepted, and installs it. No page is tracked until you accept its review.",
+  "version": "0.1.0",
+  "kind": "native_bundle",
+  "contractVersion": 2,
+  "abis": [],
+  "entryClass": "dev.droidtop.plugins.githubapps.GithubAppsPlugin",
+  "provides": [
+    {
+      "point": "apps.catalog",
+      "version": 1,
+      "label": "App releases (GitHub, GitLab, Codeberg)",
+      "links": [
+        {"scheme": "https", "host": "github.com", "pathSuffix": "/releases"},
+        {"scheme": "https", "host": "github.com", "pathSuffix": "/releases/latest"},
+        {"scheme": "https", "host": "gitlab.com", "pathSuffix": "/-/releases"},
+        {"scheme": "https", "host": "codeberg.org", "pathSuffix": "/releases"}
+      ]
+    }
+  ],
+  "permissions": [
+    {"id": "net.any", "required": true, "reason": "Reads release pages and APK files on GitHub, GitLab, Codeberg and any Forgejo server you add"},
+    {"id": "intents.in", "required": false, "reason": "Opens links to a project's releases page (github.com/owner/repo/releases) so you can review and track the app"},
+    {"id": "github.api", "required": false, "reason": "Uses your GitHub sign-in for GitHub requests, which raises the hourly request limit; your token stays in droidtop"},
+    {"id": "files.picker", "required": false, "reason": "Lets you pick an Obtainium export file to import"}
+  ]
+}
