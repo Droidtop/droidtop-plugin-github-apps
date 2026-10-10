@@ -6,3 +6,6 @@
 -allowaccessmodification
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 -dontnote **
+
+# Kotlin's @NotNull/@Nullable annotations are not on the classpath; they are only markers.
+-dontwarn org.jetbrains.annotations.**
