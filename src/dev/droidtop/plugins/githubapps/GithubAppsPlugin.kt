@@ -92,7 +92,7 @@ class GithubAppsPlugin : DroidtopPlugin {
         })
         val known = JSONArray().put(
             JSONObject().put("name", "Import from an Obtainium export file").put("address", IMPORT_ADDRESS)
-                .put("about", "Pick the file Obtainium exports; the apps in it that come from GitHub, GitLab or Codeberg are tracked here"),
+                .put("about", "Tracks the GitHub, GitLab and Codeberg apps in an Obtainium export"),
         )
         return JSONObject().put("sources", rows).put("known", known)
     }
@@ -124,8 +124,8 @@ class GithubAppsPlugin : DroidtopPlugin {
             if (tracking.options.describe().isNotEmpty()) append(" Options: ${tracking.options.describe()}.")
         }
         val notes = listOfNotNull(
-            if (wanted == null && fact.signers.isNotEmpty()) "The link named no fingerprint. droidtop trusts this signing key from now on: compare it with the developer's own page first" else null,
-            if (fact.signers.isEmpty()) "No signing key could be read ahead; the file's SHA-256 from ${tracking.forge.kind.label} is checked instead" else null,
+            if (wanted == null && fact.signers.isNotEmpty()) "This signing key is trusted from now on. Compare it with the developer's page first" else null,
+            if (fact.signers.isEmpty()) "The signing key could not be read yet; the file's checksum from ${tracking.forge.kind.label} is checked instead" else null,
             if (tied.size > 1) "${tied.size} files fit this device (${tied.joinToString { it.name }}); add a name pattern, for example ?pattern=arm64, to choose" else null,
             if (fact.prerelease) "This release is marked as a pre-release" else null,
         )
@@ -170,7 +170,7 @@ class GithubAppsPlugin : DroidtopPlugin {
                         "note",
                         listOfNotNull(
                             skipped.takeIf { it.isNotEmpty() }?.let { "Left out: $it" },
-                            "Each app's signing key is trusted from its newest release as read now. Releases are read as far as the forge's request limit allows; Refresh reads the rest",
+                            "Each app's signing key is trusted from its newest release. Refresh reads any the site's limit held back",
                         ).joinToString(". "),
                     ),
             ),

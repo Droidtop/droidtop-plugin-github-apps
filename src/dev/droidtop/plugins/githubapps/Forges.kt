@@ -251,7 +251,7 @@ object Forges {
                 IllegalStateException(
                     when {
                         releases.isEmpty() -> "No release is published there"
-                        why != null -> "No release has an APK for this device. The newest one looked at: $why"
+                        why != null -> "No release has an APK for this device"
                         else -> "No release is left once drafts" + (if (options.prerelease) "" else " and pre-releases") + " are set aside"
                     },
                 ),

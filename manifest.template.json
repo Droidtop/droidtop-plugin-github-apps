@@ -1,9 +1,9 @@
 {
   "id": "droidtop.github-apps",
   "origin": "droidtop",
-  "label": "App releases (GitHub, GitLab, Codeberg)",
-  "description": "Keep Android apps up to date straight from their developers' release pages on GitHub, GitLab, Codeberg or another Forgejo server, like Obtainium. Add a page by its address or a link, choose pre-releases and a file name pattern if you want, or import an Obtainium export. droidtop picks the APK that fits your device, checks that it is the app and the signing key you accepted, and installs it. No page is tracked until you accept its review.",
-  "version": "0.1.1",
+  "label": "App releases",
+  "description": "Installs and updates Android apps from their release pages on GitHub, GitLab and Codeberg, like Obtainium.",
+  "version": "0.1.2",
   "kind": "native_bundle",
   "contractVersion": 2,
   "abis": [],

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Shorter name and text: the plugin is "App releases"; a one-sentence description; one-line notes on the review
+  page ("This signing key is trusted from now on. Compare it with the developer's page first") and for an
+  Obtainium import. A page with no APK for this device says so without the parser's reason.
+
 ## 0.1.1
 
 - A repository with releases is no longer reported as having none ("No release is published there"): through the
