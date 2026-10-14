@@ -1,12 +1,50 @@
-# App releases for droidtop (GitHub, GitLab, Codeberg)
+<h1 align="center">App releases for droidtop</h1>
 
-A droidtop plugin (`native_bundle`, contract 2, contained) that is an **app catalog**
-(`apps.catalog@1`, droidtop `docs/plugin-api.md` 3 A12): it tracks Android apps by their developers'
-release pages, in the spirit of [Obtainium](https://github.com/ImranR98/Obtainium). droidtop draws
-everything, downloads, checks and installs (droidtop `docs/SPEC.md` 10b "Installing apps",
-Droidtop/tracker#261); this plugin is never told what is installed.
+<p align="center">
+  <b>Keep Android apps up to date from their developers' release pages.</b><br>
+  GitHub, GitLab, Codeberg or any Forgejo server, in the spirit of Obtainium.
+</p>
+
+<p align="center">
+  <a href="https://github.com/Droidtop/droidtop-plugin-github-apps/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/Droidtop/droidtop-plugin-github-apps?label=release&style=flat-square"></a>
+  <a href="https://github.com/Droidtop/droidtop-plugin-github-apps/actions"><img alt="Build" src="https://img.shields.io/github/actions/workflow/status/Droidtop/droidtop-plugin-github-apps/build.yml?branch=main&label=build&style=flat-square"></a>
+  <img alt="For droidtop" src="https://img.shields.io/badge/for-droidtop-2f7bf5?style=flat-square">
+  <a href="LICENSE"><img alt="License: GPL--3.0" src="https://img.shields.io/badge/license-GPL--3.0-blue?style=flat-square"></a>
+</p>
+
+<p align="center">
+  <img src="docs/images/get-apps.webp" alt="The Get apps screen in droidtop showing the App releases source" width="100%">
+</p>
+
+<p align="center">
+  <a href="#what-it-does">What it does</a> ·
+  <a href="#install">Install</a> ·
+  <a href="#status">Status</a> ·
+  <a href="#for-developers">For developers</a> ·
+  <a href="#licence">Licence</a>
+</p>
+
+An app catalog plugin for [droidtop](https://github.com/Droidtop/droidtop). You add a project's releases page, and droidtop shows its newest release, downloads the right APK and installs it. This plugin only reads release pages. It is never told what is installed.
+
+## Install
+
+You need [droidtop](https://github.com/Droidtop/droidtop). No page is tracked by default, so start by adding one.
+
+1. In droidtop open **Settings > Plugins > Add**. droidtop's own catalog is always there.
+2. Pick **App releases (GitHub, GitLab, Codeberg)** and press **Install**.
+3. Read the permissions it asks for and press **Accept**. Nothing runs until you do.
+
+You can also browse the catalog at [droidtop.github.io](https://droidtop.github.io/), or open this plugin's install page directly: [Install in droidtop](https://droidtop.github.io/install-plugin?catalog=https%3A%2F%2Fraw.githubusercontent.com%2Fdroidtop%2Fdroidtop-platforms%2Fmain%2Fdroidtop-plugins%2Findex.json&id=droidtop.github-apps). That link only opens a review inside droidtop.
 
 ## What it does
+
+- **Track a releases page** on GitHub, GitLab, Codeberg, or another Forgejo, Gitea or GitLab server. Add it by address or link. `owner/repo` alone means GitHub.
+- **Picks the right APK** for your device by ABI and file name. Options such as pre-releases and a file-name pattern ride on the address.
+- **Pins the signing key** you accepted. A later release signed by another key is not offered.
+- **Reads the app before downloading it**, so droidtop knows the package name, version and signing key first.
+- **Imports an Obtainium export** for the apps that come from GitHub, GitLab or Codeberg.
+
+### In detail
 
 - **Tracks a release page.** GitHub, GitLab (gitlab.com), Codeberg, and any other Forgejo, Gitea or GitLab
   server when the address says so (`forgejo:https://git.example.org/owner/repo`,
@@ -54,14 +92,29 @@ Droidtop/tracker#261); this plugin is never told what is installed.
   tracked with their pre-release, file-filter and sort settings; apps from other sources (F-Droid, Google
   Play, HTML pages) and track-only apps are counted and left out.
 
-## Upstream
+## Status
+
+Not built yet: HTML-page and other non-forge sources (Obtainium's "HTML" source), private repositories (the plugin cannot
+hand an access token to the download), per-source settings screens (options are in the address),
+a scheduled background refresh (droidtop has none yet), release-notes regular-expression filters,
+`.apks`/`.xapk` bundles, a minimum-age delay before offering an update.
+
+## For developers
+
+A droidtop plugin (`native_bundle`, contract 2, contained) that is an **app catalog**
+(`apps.catalog@1`, droidtop `docs/plugin-api.md` 3 A12): it tracks Android apps by their developers'
+release pages, in the spirit of [Obtainium](https://github.com/ImranR98/Obtainium). droidtop draws
+everything, downloads, checks and installs (droidtop `docs/SPEC.md` 10b "Installing apps",
+Droidtop/tracker#261); this plugin is never told what is installed.
+
+### Upstream
 
 Obtainium (GPL-3.0, Copyright Imran Remtulla and contributors) is the reference for how release pages are
 read: its GitHub source (`lib/app_sources/github.dart`) for the endpoints, draft and pre-release handling,
 sorting methods and settings names, and its export format. The code here is written for droidtop's plugin API
 (contained, no sockets, no file paths) rather than copied from Obtainium's Dart.
 
-## Files
+### Files
 
 - `src/dev/droidtop/plugins/githubapps/`: `GithubAppsPlugin` (the calls), `Tracker` (look at a page),
   `Forges` (addresses, release JSON, choosing a release), `Assets` (`AssetPicker`), `Versions`, `ApkProbe`
@@ -75,9 +128,6 @@ sorting methods and settings names, and its export format. The code here is writ
   asset selection, addresses and release parsing, the Obtainium import, and the APK reader against a real
   `AndroidManifest.xml` (`test/fixtures`).
 
-## Not built yet
+## Licence
 
-HTML-page and other non-forge sources (Obtainium's "HTML" source), private repositories (the plugin cannot
-hand an access token to the download), per-source settings screens (options are in the address),
-a scheduled background refresh (droidtop has none yet), release-notes regular-expression filters,
-`.apks`/`.xapk` bundles, a minimum-age delay before offering an update.
+GPL-3.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE). Obtainium (GPL-3.0, Imran Remtulla and contributors) is the reference for how release pages are read; the code here is written for droidtop's plugin API, not copied.
