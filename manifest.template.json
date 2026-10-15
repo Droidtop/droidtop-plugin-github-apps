@@ -3,7 +3,7 @@
   "origin": "droidtop",
   "label": "App releases",
   "description": "Installs and updates Android apps from their release pages on GitHub, GitLab and Codeberg, like Obtainium.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "kind": "native_bundle",
   "contractVersion": 2,
   "abis": [],

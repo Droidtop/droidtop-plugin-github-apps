@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Signed with a leaf certificate issued by the droidtop root (manifest.jws); no functional change.
+
 ## 0.1.2
 
 - Shorter name and text: the plugin is "App releases"; a one-sentence description; one-line notes on the review
