@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Names its kind for droidtop's Plugins page (`category`: sources, docs/plugin-api.md 1.2, Droidtop/tracker#179).
+
 ## 0.1.3
 
 - Signed with a leaf certificate issued by the droidtop root (manifest.jws); no functional change.
