@@ -135,3 +135,10 @@ GPL-3.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE). Obtainium (GPL-3.0, Imran 
 ## Signing
 
 The bundle carries `manifest.jws`: a detached ES256 JWS over the exact bytes of `manifest.json`, with this repository's leaf certificate in `x5c` (the root itself is not included). The leaf comes from the repository secrets `PLUGIN_SIGNING_KEY` and `PLUGIN_SIGNING_CERT` and was issued by the droidtop root (pinned by the droidtop app); it names the plugin's origin and id. `sign_jws.py` writes the signature and checks it against the leaf before packing. `manifest.sig` stays in the bundle for older droidtop builds. Expiry dates are not checked.
+
+## Branches
+
+The owner, 2026-11-05: "ALL plugins should keep the recipe on plugin-core, overlaid onto the release branch when
+needed. That's our standard operation." This plugin has no upstream project, so its one branch is **`plugin-core`**
+(the default branch): the whole recipe. Every change lands on it through a `ci/` branch, and releases are built
+from it. There is no `main` or `master`.

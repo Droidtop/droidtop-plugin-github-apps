@@ -4,7 +4,7 @@ name: Unit tests
 # (test/Tests.kt), on a plain JVM. The Kotlin version is the one droidtop's :plugin-host is built with.
 on:
   push:
-    branches: [main]
+    branches: [plugin-core]
   pull_request:
   workflow_dispatch: {}
 
