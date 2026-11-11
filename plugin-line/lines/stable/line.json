@@ -1,0 +1,9 @@
+{
+  "upstream": {
+    "repo": "Droidtop/droidtop-plugin-github-apps",
+    "ref": "creation",
+    "commit": "5a26d9eb372cffe10629e691ad908b6442633db9"
+  },
+  "version": "0",
+  "sharedPatches": false
+}
