@@ -135,3 +135,18 @@ GPL-3.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE). Obtainium (GPL-3.0, Imran 
 ## Signing
 
 The bundle carries `manifest.jws`: a detached ES256 JWS over the exact bytes of `manifest.json`, with this repository's leaf certificate in `x5c` (the root itself is not included). The leaf comes from the repository secrets `PLUGIN_SIGNING_KEY` and `PLUGIN_SIGNING_CERT` and was issued by the droidtop root (pinned by the droidtop app); it names the plugin's origin and id. `sign_jws.py` writes the signature and checks it against the leaf before packing. `manifest.sig` stays in the bundle for older droidtop builds. Expiry dates are not checked.
+
+## Branches
+
+The owner, 2026-11-10: "Just like with the enginehost cores, the plugin-core branch is the wrapper code that makes
+it a plugin, we have a branch for the actual core code, and releases are a blending of both."
+
+- **`plugin-core`** (this branch, the default): the wrapper (the plugin host glue, build, signing, manifest,
+  changelog) and each line's pin in `plugin-line/lines/<line>/line.json`.
+- **`creation`**: the core code and its tests.
+- **`plugin/stable`**: `creation` at the pinned commit with `plugin-core` written over it, composed by
+  Droidtop/droidtop-platforms `tools/plugin_line.py` and checked by `plugin-line.yml`. The bundle and releases
+  are built from it; nothing is authored there.
+
+Every change lands on `creation` or `plugin-core` through a `ci/` branch, and the line is recomposed. There is no
+`main`.
