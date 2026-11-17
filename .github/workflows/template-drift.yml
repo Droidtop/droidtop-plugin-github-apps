@@ -16,6 +16,7 @@ jobs:
   drift:
     uses: Droidtop/droidtop-platforms/.github/workflows/plugin-template-drift.yml@b3fd1d13dca24433f33eeadf632dfb0dcf53ef85
     with:
-      template-ref: tools-v1
+      template-ref: tools-v2
       files: |
         sign_jws.py tools/sign_jws.py
+        src/dev/droidtop/plugin/sdk/Host.kt tools/kotlin/dev/droidtop/plugin/sdk/Host.kt
